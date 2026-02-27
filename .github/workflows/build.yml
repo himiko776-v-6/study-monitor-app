@@ -10,20 +10,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: kivy/buildozer:latest
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
     
-    - name: Build APK with Buildozer
-      uses: ArtemSBulgakov/buildozer-action@v1
-      id: buildozer
-      with:
-        workdir: .
-        buildozer_version: stable
+    - name: Build APK
+      run: |
+        buildozer android debug
     
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: study-monitor-apk
-        path: ${{ steps.buildozer.outputs.filename }}
+        path: bin/*.apk
